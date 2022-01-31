@@ -1,0 +1,190 @@
+<html>
+<head>
+	<style>
+		body{
+             margin : 0;
+             font-family : "poppins",sans-sarif;
+             background-color: rebeccapurple;
+             color: #eee;
+             display: flex;
+             align-items : center ;
+             justify-content : center;
+             min-height: 100vh;
+		}
+		.pw-container {
+			width : 450px;
+			background-color : rgb(69,17,118);
+			box-shadow : 0 4px 10px rgba(0,0,0,0.6);
+		}
+		.pw-header{
+			padding : 1rem;
+		}
+		.pw{
+			width : 100%;
+			height : 70px;
+			background-color: rebeccapurple;
+			display : flex;
+			align-items: center;
+			position : relative;
+			font-size: 1.5rem;
+			padding: 1rem;
+		}
+		.pw button{
+			position : absolute;
+			top : 0;
+			right: 0;
+			transform : translate(0,50%);
+			transition: opacity 0.2s ease,transform 0.2s ease;
+			opacity : 0;
+			background-color: rgb(35,5,66);
+			padding : 0.25rem 1rem;
+			font-family : inherit;
+			font-weight: bold;
+			color: #fff;
+			border : none;
+			cursor: pointer;
+		}
+		.pw:hover button{
+			opacity :1;
+			transform : translate(0,-80%);
+		}
+		.pw-body{
+			padding : 0 1rem 1rem;
+		}
+		.form-control {
+			color: #eee;
+			display : flex;
+			justify-content : space-between;
+			margin: 0.75rem 0;
+		}
+		.generate{
+			display: block;
+			background-color: #ecb602;
+			color: rebeccapurple;
+			font-weight: bold;
+			padding: 1rem;
+			font-size : 1.5rem;
+			margin-top : 1rem;
+			border : none;
+			width : 100%;
+			cursor : pointer;
+		}
+	</style>
+<body>
+<div class="pw-container">
+	<div class="pw-header">
+		<div class="pw">
+			<span id="pw"> PASSWORD HERE </span>
+			<button id="copy"> Copy </button>
+		</div>
+	</div>
+	<div class="pw-body">
+		<div class="form-control" >
+			<lable for="length"> Password Length </lable>
+			<input id="len" value="10" type="number" min="8" max="30">
+		</div>
+		<div class="form-control">
+			<lable for="upper">Contain UpperCase Letters </lable>
+			<input id="upper" type="checkbox">
+		</div>
+		<div class="form-control">
+			<lable for="lower"> Contain LowerCase Letters </lable>
+			<input id="lower" type="checkbox">
+		</div>
+		<div class="form-control">
+			<lable for="number"> Contain Numbers </lable>
+			<input id="number" type="checkbox">
+		</div>
+		<div class="form-control">
+			<lable for="symbol"> Contain Symbols</lable>
+			<input id="symbol" type="checkbox">
+		</div>
+		<button class="generate" id="generate"> Generate Password </button>
+	</div>
+</div>
+<script>
+	const PwE1 = document.getElementById("pw");
+	const copyE1 = document.getElementById("copy");
+	const lenE1 = document.getElementById("len");
+	const upperE1 = document.getElementById("upper");
+	const lowerE1 = document.getElementById("lower");
+	const symbolE1 = document.getElementById("symbol");
+	const generateE1 = document.getElementById("generate");
+	const numberE1 = document.getElementById("number");
+	const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+	const numbers = "0123456789";
+	const symbols = "~!@#$%^&*()_++|";
+	function getLowercase()
+	{
+		return lowerLetters[Math.floor(Math.random() * lowerLetters.length)];
+	}
+	function getUppercase()
+	{
+		return upperLetters[Math.floor(Math.random() * upperLetters.length)];
+	}
+	function getnumber()
+	{
+		return numbers[Math.floor(Math.random() * numbers.length)];
+	}
+	function getsymbol()
+	{
+		return symbols[Math.floor(Math.random() * symbols.length)];
+	}
+	function generatePassword()
+	{
+      const len= lenE1.value;
+      let password = " ";
+      for(let i=0;i< len;i++)
+      {
+      	const x= generateX();
+      	password += x;
+
+      }
+      PwE1.innerText = password;
+  }
+ function generateX()
+{
+const xs =[];
+if (upperE1.checked)
+{
+	xs.push(getUppercase());
+}
+if (lowerE1.checked)
+{
+	xs.push(getLowercase());
+}  
+if( numberE1.checked)
+{
+	xs.push(getnumber());
+}
+if(symbolE1.checked)
+{
+	xs.push(getsymbol());
+
+}
+if(xs.length === 0) return "";
+return xs[Math.floor(Math.random()* xs.length)]; 
+}
+generateE1.addEventListener("click",generatePassword);
+copyE1.addEventListner("click",()=>
+{
+	const textarea = document.createElement("textarea");
+	const password = PwE1.innerText ;
+	if (!password)
+	{
+		return ;
+	}
+	textarea.value = password;
+    document.body.appendChild(textarea);
+    textarea.select();
+document.execCommand("copy");
+textarea.remove();
+alert("password copied to clipboard");
+});
+	
+	</script>
+</body>
+
+		
+		
